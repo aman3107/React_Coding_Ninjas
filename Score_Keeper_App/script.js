@@ -47,6 +47,27 @@ const ScoreButtons = () => (
   </div>
 );
 
+const BallWise = () => (
+  <div>
+    <p>
+      {ballWiseResult.map((ball, i) => (
+        <>
+          {i % 6 == 0 ? <br></br> : null}
+          {ball === "W" ? (
+            <>
+              <span className="changeColor">{ball}</span>&nbsp;&nbsp;
+            </>
+          ) : (
+            <>
+              <span>{ball === 0 ? <strong>.</strong> : ball}</span>&nbsp;&nbsp;
+            </>
+          )}
+        </>
+      ))}
+    </p>
+  </div>
+);
+
 const App = () => (
   <>
     <h1>SCORE KEEPER</h1>
@@ -54,6 +75,7 @@ const App = () => (
       SCORE: {score}/{wicket}
     </h2>
     <ScoreButtons />
+    <BallWise />
   </>
 );
 
