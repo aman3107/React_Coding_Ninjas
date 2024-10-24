@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <title>React App</title>
+  </head>
+
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      let studentsName = [];
+      let studentsMarks = [];
+      let studentsDetails = [];
+      let studentsRef = React.createRef();
+      let marksRef = React.createRef();
+      const handleEvent = (e) => {
+        e.preventDefault();
+        // studentsName.push(studentsRef.current.value);
+        // studentsMarks.push(marksRef.current.value);
+        studentsDetails.push(
+          <tr>
+            <td>{studentsRef.current.value}</td>
+            <td>{marksRef.current.value}</td>
+          </tr>
+        );
+      };
+      const Form = () => (
+        <>
+          <form onSubmit={handleEvent}>
+            <input placeholder="Name" ref={studentsRef} />
+            <input placeholder="Marks" ref={marksRef} />
+            <button>Submit</button>
+          </form>
+        </>
+      );
+
+      const Result = () => (
+        <p>
+          <table></table>
+        </p>
+      );
+
+      const App = () => (
+        <>
+          <Form />
+          <Result />
+        </>
+      );
+
+      const rootElement = ReactDOM.createRoot(document.getElementById("root"));
+      rootElement.render(<Form />);
+    </script>
+  </body>
+</html>
