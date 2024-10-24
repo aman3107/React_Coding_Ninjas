@@ -18,27 +18,27 @@
     <div id="root"></div>
 
     <script type="text/babel">
-      let studentsName = [];
-      let studentsMarks = [];
       let studentsDetails = [];
       let studentsRef = React.createRef();
       let marksRef = React.createRef();
       const handleEvent = (e) => {
         e.preventDefault();
-        // studentsName.push(studentsRef.current.value);
-        // studentsMarks.push(marksRef.current.value);
+
         studentsDetails.push(
-          <tr>
+          <>
             <td>{studentsRef.current.value}</td>
             <td>{marksRef.current.value}</td>
-          </tr>
+          </>
         );
+        studentsRef.current.value = "";
+        marksRef.current.value = "";
+        rootElement.render(<App />);
       };
       const Form = () => (
         <>
           <form onSubmit={handleEvent}>
             <input placeholder="Name" ref={studentsRef} />
-            <input placeholder="Marks" ref={marksRef} />
+            <input type="number" placeholder="Marks" ref={marksRef} />
             <button>Submit</button>
           </form>
         </>
@@ -46,19 +46,28 @@
 
       const Result = () => (
         <p>
-          <table></table>
+          <table border="1">
+            <thead>
+              <th>Student's name</th>
+              <th>Marks</th>
+            </thead>
+            {studentsDetails.map((student, ind) => (
+              <tr key={ind}>{student}</tr>
+            ))}
+          </table>
         </p>
       );
 
       const App = () => (
         <>
+          <h1>Student's form</h1>
           <Form />
           <Result />
         </>
       );
 
       const rootElement = ReactDOM.createRoot(document.getElementById("root"));
-      rootElement.render(<Form />);
+      rootElement.render(<App />);
     </script>
   </body>
 </html>

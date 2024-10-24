@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link href="CMT.css" rel="stylesheet" />
+    <title>React App</title>
+  </head>
+
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      let customers = [];
+      const capacity = 25;
+      let seatsLeft = 25;
+      const guestsCountRef = React.createRef();
+      const guestsNameRef = React.createRef();
+      const guestsPhoneRef = React.createRef();
+
+      const clearInput = () => {
+        guestsCountRef.current.value = "";
+        guestsNameRef.current.value = "";
+        guestsPhoneRef.current.value = "";
+      };
+
+      const handleDelete = (ind, e) => {
+        customers.splice(ind, 1);
+        rootElement.render(<App />);
+      };
+
+      // Create form submit handler here
+      const handleSubmit = (e) => {
+        e.preventDefault();
+        const guestCount = guestsCountRef.current.value;
+        const guestName = guestsNameRef.current.value;
+        const guestPhone = guestsPhoneRef.current.value;
+        const currTime = new Date().toLocaleTimeString();
+
+        if (seatsLeft > 0) {
+          if (customers.find((customer) => customer.guestName === guestName)) {
+            alert("Customer already exists.");
+          } else {
+            customers.push({ guestCount, guestName, guestPhone, currTime });
+            seatsLeft -= parseInt(guestCount);
+          }
+        } else {
+          alert("Guest count exceeds capacity.");
+        }
+        clearInput();
+        rootElement.render(<App />);
+      };
+
+      const App = () => (
+        <div className="App" style={{ textAlign: "center" }}>
+          <div>
+            <h2>Total Capacity:{capacity} </h2>
+            <h2>Seats Left: {seatsLeft}</h2>
+          </div>
+
+          {/* Create a form here for the input count, name and phone number with a submit button*/}
+
+          <form onSubmit={handleSubmit}>
+            <input
+              type="number"
+              placeholder="Guests Count"
+              ref={guestsCountRef}
+            />
+            <input
+              type="text"
+              placeholder="Primary Guest Name"
+              ref={guestsNameRef}
+            />
+            <input
+              type="tel"
+              maxLength="10"
+              placeholder="Phone Number"
+              ref={guestsPhoneRef}
+            />
+            <button>Add Entry</button>
+          </form>
+
+          <table border="1px" style={{ margin: "auto" }}>
+            <thead>
+              <tr>
+                <th>Count</th>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Check In</th>
+                <th>Remove Entry</th>
+              </tr>
+            </thead>
+            <tbody>
+              {customers.map((customer, ind) => (
+                <>
+                  <tr key={ind}>
+                    <td>{customer.guestCount}</td>
+                    <td>{customer.guestName}</td>
+                    <td>{customer.guestPhone}</td>
+                    <td>{customer.currTime}</td>
+                    <td onClick={(e) => handleDelete(ind, e)}>Delete</td>
+                  </tr>
+                </>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      );
+
+      const rootElement = ReactDOM.createRoot(document.getElementById("root"));
+      rootElement.render(<App />);
+    </script>
+  </body>
+</html>
